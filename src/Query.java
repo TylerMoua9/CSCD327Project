@@ -160,7 +160,7 @@ public class Query {
 	public void query4() throws IOException, SQLException {
 
 		// Prepare the SQL statement
-		String query  = "with avg_shipping as (select concat(firstName, ' ', lastName) as fullName, avg(shipCost) as AVG_SHIPPING_COST from orders natural join customer group by customerID)" +
+		String query = "with avg_shipping as (select concat(firstName, ' ', lastName) as fullName, avg(shipCost) as AVG_SHIPPING_COST from orders natural join customer group by customerID)" +
 				"select fullName from avg_shipping where AVG_SHIPPING_COST = (select max(AVG_SHIPPING_COST) from avg_shipping)";
 
 		stmt = conn.prepareStatement(query);
@@ -172,12 +172,10 @@ public class Query {
 		System.out.println("\nQuery output:");
 		System.out.println("-------------");
 
-		if(!result.next()) {
+		if (!result.next()) {
 			System.out.println("No results exist for this input");
 			return;
-		}
-
-		else
+		} else
 			do {
 				String row = result.getString(1);
 				System.out.println(row);
@@ -193,18 +191,26 @@ public class Query {
 		Float endingPrice = scanner.nextFloat();
 
 		// Prepare the SQL statement
-		String query  = "update author set lastName = ?, firstName = ? where authorID = ?";
+		String query  = "select title, name from book natural join publisher where price between ? and ?";
 		stmt = conn.prepareStatement(query);
 
 		// Replace the '?' in the above statement with the input book id
-		stmt.setFloat(1, lastName);
-		stmt.setString(2, firstName);
-		stmt.setString(3, authorID);
+		stmt.setFloat(1, startingPrice);
+		stmt.setFloat(2, endingPrice);
 
 		// Retrieve data with the query
-		stmt.executeUpdate();
+		result = stmt.executeQuery();
 
-		System.out.println(firstName + " " + lastName + " with authorID of " + authorID + " was added!");
+		// Print the retrieved data
+		if (!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		} else
+			System.out.printf("\n%-30s  %-35s%n", "Book Title", "Publisher Name");
+			System.out.printf("------------------------------------------------------\n");
+			do {
+				System.out.printf("%-30s  %-35s%n", result.getString(1), result.getString(2));
+			} while (result.next());
 
 	}
 
