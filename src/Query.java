@@ -5,17 +5,11 @@
  *******************************************************/
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.CallableStatement;
-import java.util.*;
 import java.lang.String;
 import java.util.Scanner;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class Query {
 
@@ -29,41 +23,71 @@ public class Query {
 		conn = c;
 	}
 
-	public void exampleQuery1() throws IOException, SQLException
+	public void query1() throws IOException, SQLException
 	{
 		// Take user input
-		System.out.println("\nEnter the book id:");
-		int bookID = scanner.nextInt();
+		System.out.println("\nEnter the authorID to update:");
+		String authorID = scanner.nextLine();
+		System.out.println("\nEnter the first name of the author: ");
+		String firstName = scanner.nextLine();
+		System.out.println("\nEnter the last name of the author: ");
+		String lastName = scanner.nextLine();
 
 		// Prepare the SQL statement
-		String query  = "select * from book where book_id =?";
+		String query  = "update author set lastName = ?, firstName = ? where authorID = ?";
 		stmt = conn.prepareStatement(query);
 
 		// Replace the '?' in the above statement with the input book id
-		stmt.setInt(1, bookID);
+		stmt.setString(1, lastName);
+		stmt.setString(2, firstName);
+		stmt.setString(3, authorID);
 
 		// Retrieve data with the query
-		result = stmt.executeQuery();
+		stmt.executeUpdate();
 
+		System.out.println(firstName + " " + lastName + " with authorID of " + authorID + " was added!");
+
+		/*
 		// Print the retrieved data
 		System.out.println("\nQuery output:");
 		System.out.println("-------------");
+
 
 		if(!result.next()) {
 			System.out.println("No results exist for this input");
 			return;
 		}
 
-		else
+		else {
 			do {
 				// It is possible to get the columns using the column names or using the column number, which starts at 1. The example below uses both
-				String row = result.getString(1) + "\t\t" + result.getString("title")+ "\t\t" + result.getString(3) + "\t\t" + result.getString(4) + "\t\t" + result.getString(5);
+				String row = result.getString(1) + "\t\t" + result.getString("title") + "\t\t" + result.getString(3) + "\t\t" + result.getString(4) + "\t\t" + result.getString(5);
 				System.out.println(row);
 			} while (result.next());
+		}
+		 */
 	}
 
-	public void exampleQuery2() throws IOException, SQLException
-	{
+	public void query2() throws IOException, SQLException {
+
+		// Take user input
+		System.out.println("\nEnter the authorID to delete:");
+		String authorID = scanner.nextLine();
+
+		// Prepare the SQL statement
+		String query  = "delete from author where authorID = ?";
+		stmt = conn.prepareStatement(query);
+
+		// Replace the '?' in the above statement with the input book id
+		stmt.setString(1, authorID);
+
+		// Retrieve data with the query
+		stmt.executeUpdate();
+
+		System.out.println("authorID of " + authorID + " was deleted!");
+
+
+		/*
 		// Take user inputs
 		System.out.println("\nEnter the member id:");
 		int memberID = scanner.nextInt();
@@ -101,6 +125,9 @@ public class Query {
 		// Insert data with the query and print status
 		if (stmt.executeUpdate() == 1)
 			System.out.println("\nData added successfully.");
+
+
+		 */
 
 	}
 

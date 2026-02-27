@@ -43,11 +43,11 @@ public class RunQuery {
 				switch (queryNumber) {
 
 					case 1:
-						myquery.exampleQuery1();
+						myquery.query1();
 						break;
 
 					case 2:
-						myquery.exampleQuery2();
+						myquery.query2();
 						break;
 
 					case 3:
