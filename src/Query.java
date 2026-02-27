@@ -160,8 +160,9 @@ public class Query {
 	public void query4() throws IOException, SQLException {
 
 		// Prepare the SQL statement
-		String query  = "with avg_shipping as (select orderID, concat(firstName, ' ', lastName) as fullName, avg(shipCost) as AVG_SHIPPING_COST from orders natural join customer group by orderID, customerID)" +
-				" select fullName from (select fullName, max(AVG_SHIPPING_COST) from avg_shipping group by orderID) as max_avg_shipping";
+		String query  = "with avg_shipping as (select concat(firstName, ' ', lastName) as fullName, avg(shipCost) as AVG_SHIPPING_COST from orders natural join customer group by customerID)" +
+				"select fullName from avg_shipping where AVG_SHIPPING_COST = (select max(AVG_SHIPPING_COST) from avg_shipping)";
+
 		stmt = conn.prepareStatement(query);
 
 		// Retrieve data with the query
@@ -184,6 +185,27 @@ public class Query {
 	}
 
 	public void exampleQuery5() throws IOException, SQLException {
+
+		// Take user input
+		System.out.println("\nEnter the starting price range:");
+		Float startingPrice = scanner.nextFloat();
+		System.out.println("\nEnter the ending price range: ");
+		Float endingPrice = scanner.nextFloat();
+
+		// Prepare the SQL statement
+		String query  = "update author set lastName = ?, firstName = ? where authorID = ?";
+		stmt = conn.prepareStatement(query);
+
+		// Replace the '?' in the above statement with the input book id
+		stmt.setFloat(1, lastName);
+		stmt.setString(2, firstName);
+		stmt.setString(3, authorID);
+
+		// Retrieve data with the query
+		stmt.executeUpdate();
+
+		System.out.println(firstName + " " + lastName + " with authorID of " + authorID + " was added!");
+
 	}
 
 	public void exampleQuery6() throws IOException, SQLException {}
