@@ -131,18 +131,12 @@ public class Query {
 
 	}
 
-	public void exampleQuery3() throws IOException, SQLException
+	public void query3() throws IOException, SQLException
 	{
-		// Take user input
-		System.out.println("\nEnter the member id:");
-		int memberID = scanner.nextInt();
 
 		// Prepare the SQL statement
-		String query  = "select title from Member join Borrow using (member_id) join Book using(book_id) where member_id =?";
+		String query  = "select fullName from (select concat(firstName, ' ', lastName) as fullName, count(*) as NUM_BOOKS from author natural join book_author group by authorID) as counted_books where NUM_BOOKS > 1";
 		stmt = conn.prepareStatement(query);
-
-		// Replace the '?' in the above statement with the input member id
-		stmt.setInt(1, memberID);
 
 		// Retrieve data with the query
 		result = stmt.executeQuery();
@@ -163,9 +157,34 @@ public class Query {
 			} while (result.next());
 	}
 
-	public void exampleQuery4() throws IOException, SQLException {}
+	public void query4() throws IOException, SQLException {
 
-	public void exampleQuery5() throws IOException, SQLException {}
+		// Prepare the SQL statement
+		String query  = "with avg_shipping as (select orderID, concat(firstName, ' ', lastName) as fullName, avg(shipCost) as AVG_SHIPPING_COST from orders natural join customer group by orderID, customerID)" +
+				" select fullName from (select fullName, max(AVG_SHIPPING_COST) from avg_shipping group by orderID) as max_avg_shipping";
+		stmt = conn.prepareStatement(query);
+
+		// Retrieve data with the query
+		result = stmt.executeQuery();
+
+		// Print the retrieved data
+		System.out.println("\nQuery output:");
+		System.out.println("-------------");
+
+		if(!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		}
+
+		else
+			do {
+				String row = result.getString(1);
+				System.out.println(row);
+			} while (result.next());
+	}
+
+	public void exampleQuery5() throws IOException, SQLException {
+	}
 
 	public void exampleQuery6() throws IOException, SQLException {}
 
