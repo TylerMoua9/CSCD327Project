@@ -59,7 +59,7 @@ public class RunQuery {
 						break;
 
 					case 5:
-						myquery.exampleQuery5();
+						myquery.query5();
 						break;
 
 					case 6:

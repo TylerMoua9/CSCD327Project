@@ -182,7 +182,7 @@ public class Query {
 			} while (result.next());
 	}
 
-	public void exampleQuery5() throws IOException, SQLException {
+	public void query5() throws IOException, SQLException {
 
 		// Take user input
 		System.out.println("\nEnter the starting price range:");
@@ -214,7 +214,30 @@ public class Query {
 
 	}
 
-	public void exampleQuery6() throws IOException, SQLException {}
+	public void exampleQuery6() throws IOException, SQLException {
+
+		// Take user input
+		System.out.println("\nEnter the orderID to find its total:");
+		int orderID = scanner.nextInt();
+
+		// Prepare the SQL statement
+		String query  = "select sum(price * quantity) + coalesce(max(shipCost), 0) as TOTAL_COST from items join orders using (orderID) join book using (ISBN) where orderID = ?";
+		stmt = conn.prepareStatement(query);
+
+		// Replace the '?' in the above statement with the input book id
+		stmt.setInt(1, orderID);
+
+		// Retrieve data with the query
+		result = stmt.executeQuery();
+
+		if (!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		} else
+			System.out.printf("\nTotal Cost of the Order\n");
+		System.out.printf("----------------------\n");
+		System.out.printf("$" + result.getString(1) + "\n");
+	}
 
 	public void exampleQuery7() throws IOException, SQLException {}
 
