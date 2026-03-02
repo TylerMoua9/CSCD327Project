@@ -214,7 +214,7 @@ public class Query {
 
 	}
 
-	public void exampleQuery6() throws IOException, SQLException {
+	public void query6() throws IOException, SQLException {
 
 		// Take user input
 		System.out.println("\nEnter the orderID to find its total:");
@@ -239,9 +239,77 @@ public class Query {
 		System.out.printf("$" + result.getString(1) + "\n");
 	}
 
-	public void exampleQuery7() throws IOException, SQLException {}
+	public void query7() throws IOException, SQLException {
 
-	public void exampleQuery8() throws IOException, SQLException {}
+		// Prepare the SQL statement
+		String query = "with countRegions as (select region, count(orderID) as COUNT from orders natural join customer group by region) select region from countRegions where count = (select max(COUNT) from countRegions)";
+
+		stmt = conn.prepareStatement(query);
+
+		// Retrieve data with the query
+		result = stmt.executeQuery();
+
+		// Print the retrieved data
+		System.out.println("\nRegion(s) with the greatest amount of orders:");
+		System.out.println("---------------------------------------------");
+
+		if (!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		} else
+			do {
+				String row = result.getString(1);
+				System.out.println(row);
+			} while (result.next());
+
+	}
+
+	public void exampleQuery8() throws IOException, SQLException {
+
+		// Take user input
+		System.out.println("\nEnter the full name of the customer: ");
+		String fullName = scanner.nextLine();
+		String[] name = fullName.split(" ");
+
+		// Prepare the SQL statement
+		String query  = "with findID as (select orderID from customer natural join orders where firstName = ? and lastName = ?)\n" +
+				"select sum(TOTAL_COST) as TOTAL_FROM_ALL_ORDERS \n" +
+				"from (SELECT \n" +
+				"    SUM(price * quantity) + COALESCE(MAX(shipCost), 0) AS TOTAL_COST\n" +
+				"FROM\n" +
+				"    items\n" +
+				"        JOIN\n" +
+				"    orders USING (orderID)\n" +
+				"        JOIN\n" +
+				"    book USING (ISBN) \n" +
+				"\t\tJOIN\n" +
+				"\tfindID USING (orderID)\n" +
+				"WHERE\n" +
+				"    orderID = findID.orderID) as Total_Order_Cost";
+
+		stmt = conn.prepareStatement(query);
+
+		// Replace the '?' in the above statement with the input book id
+		stmt.setString(1, name[0]);
+		stmt.setString(2, name[1]);
+
+		// Retrieve data with the query
+		result = stmt.executeQuery();
+
+		// Print the retrieved data
+		System.out.println("\nTotal Cost of All Orders by " + fullName + ":");
+		System.out.println("---------------------------------------------");
+
+		if (!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		} else
+			do {
+				String row = result.getString(1);
+				System.out.println(row);
+			} while (result.next());
+
+	}
 
 	public void exampleQuery9() throws IOException, SQLException {}
 
