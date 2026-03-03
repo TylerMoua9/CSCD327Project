@@ -264,7 +264,7 @@ public class Query {
 
 	}
 
-	public void exampleQuery8() throws IOException, SQLException {
+	public void query8() throws IOException, SQLException {
 
 		// Take user input
 		System.out.println("\nEnter the full name of the customer: ");
