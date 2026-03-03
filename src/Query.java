@@ -285,7 +285,7 @@ public class Query {
 				"\t\tJOIN\n" +
 				"\tfindID USING (orderID)\n" +
 				"WHERE\n" +
-				"    orderID = findID.orderID) as Total_Order_Cost";
+				"    orderID = findID.orderID) as Total_Order_Cost;";
 
 		stmt = conn.prepareStatement(query);
 
@@ -308,11 +308,58 @@ public class Query {
 				String row = result.getString(1);
 				System.out.println(row);
 			} while (result.next());
+	}
+
+	public void query9() throws IOException, SQLException {
+
+		// Prepare the SQL statement
+		String query = "select distinct category, category_average_price(category) as AVERAGE_CATEGORY_PRICE from book order by category asc";
+
+		stmt = conn.prepareStatement(query);
+
+		// Retrieve data with the query
+		result = stmt.executeQuery();
+
+		// Print the retrieved data
+		System.out.println("\nAverage Price of Books in each Category:");
+		System.out.println("---------------------------------------------");
+
+		if (!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		} else
+			System.out.printf("\n%-30s  %-35s%n", "Category", "Average Price of Books");
+		System.out.printf("------------------------------------------------------\n");
+		do {
+			System.out.printf("%-30s  $%-35s%n", result.getString(1), result.getString(2));
+		} while (result.next());
+
 
 	}
 
-	public void exampleQuery9() throws IOException, SQLException {}
+	public void exampleQuery10() throws IOException, SQLException {
 
-	public void exampleQuery10() throws IOException, SQLException {}
+		// Prepare the SQL statement
+		String query = "call find_coauthors()";
+
+		stmt = conn.prepareStatement(query);
+
+		// Retrieve data with the query
+		result = stmt.executeQuery();
+
+		// Print the retrieved data
+		System.out.println("\nAuthor's That Have Coauthored a Book");
+		System.out.println("---------------------------------------");
+
+		if (!result.next()) {
+			System.out.println("No results exist for this input");
+			return;
+		} else
+			do {
+				String row = result.getString(1);
+				System.out.println(row);
+			} while (result.next());
+
+	}
 
 }
