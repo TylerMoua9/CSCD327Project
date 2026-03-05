@@ -204,10 +204,14 @@ public class Query {
 
 	public void query8() throws IOException, SQLException {
 
+		String[] name;
+		String fullName;
 		// Take user input
-		System.out.println("\nEnter the full name of the customer: ");
-		String fullName = scanner.nextLine();
-		String[] name = fullName.split(" ");
+		do {
+			System.out.println("\nEnter the full name of the customer in the form <First_Name> <Last_Name>: ");
+			fullName = scanner.nextLine().trim();
+			name = fullName.split(" ");
+		} while (name.length != 2);
 
 		// Prepare the SQL statement
 		String query  = "with findID as (select orderID from customer natural join orders where firstName = ? and lastName = ?)\n" +
