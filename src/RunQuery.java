@@ -13,7 +13,8 @@ public class RunQuery {
 
 	public static void main(String[] args) {
 
-		int run = 1, queryNumber;
+		int queryNumber;
+		String run = "1";
 		Scanner scanner = new Scanner(System.in);
 
 		try {
@@ -23,7 +24,7 @@ public class RunQuery {
 
 			System.out.println("Welcome!!!");
 
-			while (run == 1) {
+			while (!run.equals("0")) {
 
 				System.out.println("\nChoose an option from the following Queries:");
 				System.out.println("1. Update an author's name");
@@ -79,15 +80,16 @@ public class RunQuery {
 						break;
 
 					case 10:
-						myquery.exampleQuery10();
+						myquery.query10();
 						break;
 
 					default:
 						System.out.println("\nInvalid choice...");
 				}
 
-				System.out.println("\nEnter 1 to CONTINUE, enter any other number to QUIT");
-				run = scanner.nextInt();
+				System.out.println("\nEnter anything to CONTINUE, enter 0 to QUIT");
+				scanner.nextLine();
+				run = scanner.nextLine().trim();
 			}
 			
 			System.out.println("\nExiting...Bye!");

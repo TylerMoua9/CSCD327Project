@@ -47,25 +47,6 @@ public class Query {
 
 		System.out.println(firstName + " " + lastName + " with authorID of " + authorID + " was added!");
 
-		/*
-		// Print the retrieved data
-		System.out.println("\nQuery output:");
-		System.out.println("-------------");
-
-
-		if(!result.next()) {
-			System.out.println("No results exist for this input");
-			return;
-		}
-
-		else {
-			do {
-				// It is possible to get the columns using the column names or using the column number, which starts at 1. The example below uses both
-				String row = result.getString(1) + "\t\t" + result.getString("title") + "\t\t" + result.getString(3) + "\t\t" + result.getString(4) + "\t\t" + result.getString(5);
-				System.out.println(row);
-			} while (result.next());
-		}
-		 */
 	}
 
 	public void query2() throws IOException, SQLException {
@@ -85,49 +66,6 @@ public class Query {
 		stmt.executeUpdate();
 
 		System.out.println("authorID of " + authorID + " was deleted!");
-
-
-		/*
-		// Take user inputs
-		System.out.println("\nEnter the member id:");
-		int memberID = scanner.nextInt();
-		scanner.nextLine();
-		
-		System.out.println("\nEnter the member's name:");
-		String memberName = scanner.nextLine();
-				
-		System.out.println("\nEnter the member's city:");
-		String city = scanner.nextLine();
-		
-		System.out.println("\nEnter the joining date:");
-		String joinDate = scanner.nextLine();
-
-		// Prepare the SQL statement
-		String query  = "insert into Member values (?, ?, ?, ?)";
-		stmt = conn.prepareStatement(query);
-
-		// Replace the '?'s in the above statement with the inputs
-		stmt.setInt(1, memberID);
-		stmt.setString(2, memberName);
-		stmt.setString(3, city);
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-		try { 
-			Date joinDateFormatted = dateFormat.parse(joinDate);
-			java.sql.Date sqlDate = new java.sql.Date(joinDateFormatted.getTime());
-			stmt.setDate(4, sqlDate);
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
-		};
-
-		
-
-		// Insert data with the query and print status
-		if (stmt.executeUpdate() == 1)
-			System.out.println("\nData added successfully.");
-
-
-		 */
 
 	}
 
@@ -337,7 +275,7 @@ public class Query {
 
 	}
 
-	public void exampleQuery10() throws IOException, SQLException {
+	public void query10() throws IOException, SQLException {
 
 		// Prepare the SQL statement
 		String query = "call find_coauthors()";
@@ -348,17 +286,15 @@ public class Query {
 		result = stmt.executeQuery();
 
 		// Print the retrieved data
-		System.out.println("\nAuthor's That Have Coauthored a Book");
-		System.out.println("---------------------------------------");
-
 		if (!result.next()) {
 			System.out.println("No results exist for this input");
 			return;
 		} else
-			do {
-				String row = result.getString(1);
-				System.out.println(row);
-			} while (result.next());
+			System.out.printf("\n%-20s  %-20s  %-20s%n", "ISBN", "Author1", "Author2");
+		System.out.printf("------------------------------------------------------\n");
+		do {
+			System.out.printf("%-20s  %-20s  %-20s%n",  result.getString(1), result.getString(2), result.getString(3));
+		} while (result.next());
 
 	}
 
