@@ -214,20 +214,32 @@ public class Query {
 		} while (name.length != 2);
 
 		// Prepare the SQL statement
-		String query  = "with findID as (select orderID from customer natural join orders where firstName = ? and lastName = ?)\n" +
-				"select sum(TOTAL_COST) as TOTAL_FROM_ALL_ORDERS \n" +
-				"from (SELECT \n" +
+		String query  = "WITH findID AS (\n" +
+				"    SELECT \n" +
+				"    orderID\n" +
+				"FROM\n" +
+				"    customer\n" +
+				"        NATURAL JOIN\n" +
+				"    orders\n" +
+				"WHERE\n" +
+				"    firstName = ?\n" +
+				"        AND lastName = ?\n" +
+				")\n" +
+				"SELECT SUM(TOTAL_COST) AS TOTAL_FROM_ALL_ORDERS\n" +
+				"FROM (\n" +
+				"    SELECT \n" +
+				"    orderID,\n" +
 				"    SUM(price * quantity) + COALESCE(MAX(shipCost), 0) AS TOTAL_COST\n" +
 				"FROM\n" +
 				"    items\n" +
 				"        JOIN\n" +
 				"    orders USING (orderID)\n" +
 				"        JOIN\n" +
-				"    book USING (ISBN) \n" +
-				"\t\tJOIN\n" +
-				"\tfindID USING (orderID)\n" +
-				"WHERE\n" +
-				"    orderID = findID.orderID) as Total_Order_Cost;";
+				"    book USING (ISBN)\n" +
+				"        JOIN\n" +
+				"    findID USING (orderID)\n" +
+				"GROUP BY orderID\n" +
+				") AS Total_Order_Cost;";
 
 		stmt = conn.prepareStatement(query);
 
