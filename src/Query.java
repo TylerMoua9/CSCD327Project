@@ -80,8 +80,8 @@ public class Query {
 		result = stmt.executeQuery();
 
 		// Print the retrieved data
-		System.out.println("\nQuery output:");
-		System.out.println("-------------");
+		System.out.println("\nAuthors who have written multiple books:");
+		System.out.println("----------------------------------------");
 
 		if(!result.next()) {
 			System.out.println("No results exist for this input");
@@ -107,8 +107,8 @@ public class Query {
 		result = stmt.executeQuery();
 
 		// Print the retrieved data
-		System.out.println("\nQuery output:");
-		System.out.println("-------------");
+		System.out.println("\nCustomer with highest on average shipping cost:");
+		System.out.println("------------------------------------------------");
 
 		if (!result.next()) {
 			System.out.println("No results exist for this input");

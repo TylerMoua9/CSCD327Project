@@ -109,10 +109,10 @@ public class RunQuery {
 		// Create connection to the database
 		Connection connection;
 		String serverName = "10.219.0.50:3306";
-		String database = "w26tmoua9_projectDB"; 	// CHANGE THE USERNAME HERE TO TEST, LATER CHANGE THE DATABASE NAME FOR THE PROJECT
+		String database = "w26tmoua9_projectDB";
 		String url = "jdbc:mysql://" + serverName + "/" + database;
-		String username = "w26tmoua9"; 		// CHANGE THE USERNAME HERE
-		String password = "3dwBl@nkM0u@"; 		// CHANGE THE PASSWORD HERE
+		String username = "w26tmoua9";
+		String password = ""; 		// THE PASSWORD HAS BEEN CHANGED
 		connection = DriverManager.getConnection(url, username, password);
 		return connection;
 	}
